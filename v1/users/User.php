@@ -23,6 +23,20 @@ class User
         $this->conn = $db;
     }
 
+    public function toJson()
+    {
+        return json_encode([
+            'user_id' => $this->user_id,
+            'user_name' => $this->user_name,
+            'password' => $this->password,
+            'email' => $this->email,
+            'full_name' => $this->full_name,
+            'address' => $this->address,
+            'gender' => $this->gender,
+            'created' => $this->created
+        ]);
+    }
+
     // used by select drop-down list
     public function read()
     {
@@ -110,7 +124,7 @@ class User
         $stmt->bindParam(":created", $this->created);
 
         // execute query
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $this->user_id = $this->conn->lastInsertId();
             return true;
         }
