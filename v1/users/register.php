@@ -6,6 +6,7 @@ header("Content-Type: application/json; charset=UTF-8");
 // include database and object files
 include_once '../configs/database.php';
 include_once 'User.php';
+include_once '../common/BaseResponse.php';
 
 // instantiate database and category object
 $database = new Database();
@@ -13,6 +14,7 @@ $db = $database->getConnection();
 
 // initialize object
 $user = new User($db);
+$baseResponse = new BaseResponse();
 
 // set user property values
 $user->user_name = $_POST['user_name'];
@@ -22,18 +24,15 @@ $user->created = date('Y-m-d H:i:s');
 
 // create the user
 if($user->register()){
-    $user_arr=array(
-        "status" => true,
-        "message" => "Successfully register!",
-        "user_id" => $user->user_id,
-        "user_name" => $user->user_name
-    );
+    // create array
+    $baseResponse->status = 1;
+    $baseResponse->message = "Success";
+    $baseResponse->data = $user;
 }
 else{
-    $user_arr=array(
-        "status" => false,
-        "message" => "Username already exists!"
-    );
+    $baseResponse->status = 0;
+    $baseResponse->message = "Username already exists!";
+    $baseResponse->data = new ArrayObject();
 }
-print_r(json_encode($user_arr));
+print_r($baseResponse->toJson());
 

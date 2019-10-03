@@ -37,7 +37,6 @@ if ($stmt->rowCount() > 0) {
     $user->gender = $row["gender"];
     $user->created = $row["created"];
 
-
     // create array
     $baseResponse->status = 1;
     $baseResponse->message = "Success";
